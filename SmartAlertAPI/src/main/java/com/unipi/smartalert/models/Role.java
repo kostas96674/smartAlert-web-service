@@ -1,7 +1,9 @@
 package com.unipi.smartalert.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "roles")
 public class Role {
