@@ -1,4 +1,4 @@
-package com.unipi.smartalert.Security;
+package com.unipi.smartalert.security;
 
 import com.unipi.smartalert.services.UserService;
 import org.springframework.context.annotation.Bean;
