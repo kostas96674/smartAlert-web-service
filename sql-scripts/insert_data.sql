@@ -12,12 +12,6 @@ insert into users (password, email, first_name, last_name, role_id)
 values ('$2a$10$VZhQtTrxB..ZBrXfOK9dF.MPpj6Cr.9Cy52edEjzpbjWAQzSlEf.S', 'citizen1@dev.com', 'citizen', 'one', 1),
        ('$2a$10$z3WUsz7SGCzzIKRpoiDnmeNZzW9dy3/xKTvdkzJU3l7HX5SdPLtOW', 'employee1@dev.com', 'employee', 'one', 2);
 
--- insert users roles into table users_roles
-insert into users_roles (user_id, role_id)
-values (1, 1),
-       (1, 2),
-       (2, 3);
-
 -- insert incident categories into table incident_categories
 insert into incident_categories (id, init_search_radius_in_meters)
 values (1, 500),
