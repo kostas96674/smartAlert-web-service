@@ -9,8 +9,8 @@ import lombok.Getter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "name", nullable = false, length = 20, unique = true)
-    private String name;
+    @Column(name = "title", nullable = false, length = 16, unique = true)
+    private String title;
 }
