@@ -1,15 +1,28 @@
 package com.unipi.smartalert.controllers;
 
+import com.unipi.smartalert.dtos.IncidentCategoryDTO;
+import com.unipi.smartalert.models.IncidentCategory;
+import com.unipi.smartalert.repositories.IncidentCategoryRepository;
+import com.unipi.smartalert.services.IncidentCategoryService;
+import lombok.AllArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Locale;
+
 @RestController
-@RequestMapping("/incidents")
-public class IncidentsController {
+@RequestMapping("/incident-categories")
+@AllArgsConstructor
+public class IncidentCategoriesController {
+
+    private IncidentCategoryService service;
 
     // GET /incidents - Get all incidents
     @GetMapping
-    public void getAll() {
-        // TODO: Implement
+    public List<IncidentCategoryDTO> getAll() {
+        Locale locale = LocaleContextHolder.getLocale();
+        return service.findByLanguage(locale.getLanguage());
     }
 
     // GET /incidents/{id} - Get an incident by ID
