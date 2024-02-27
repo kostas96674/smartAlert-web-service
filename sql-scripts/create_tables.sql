@@ -1,29 +1,36 @@
+-- Enable PostGIS extension
+CREATE EXTENSION IF NOT EXISTS postgis;
+
 -- drop tables
 drop table if exists incident_reports;
-drop table if exists incidents;
-drop table if exists users_roles;
+drop table if exists report_groups;
+drop table if exists incident_category_names;
+drop table if exists incident_categories;
 drop table if exists users;
 drop table if exists roles;
 
+-- drop group_status enum
+drop type if exists group_status;
 
 -- create table roles
 create table roles
 (
     id   serial primary key,
-    name varchar(20) not null unique check ( name <> '' )
+    title varchar(16) not null unique
 );
 
 -- create table users
 create table users
 (
     id         serial primary key,
-    username   varchar(30) not null unique check ( username <> '' ),
-    password   varchar(60) not null check ( password <> '' ),
-    email      varchar(50) not null unique check ( email <> '' ),
-    first_name varchar(50) not null check ( first_name <> '' ),
-    last_name  varchar(50) not null check ( last_name <> '' ),
-    phone      varchar(20) not null unique check ( phone <> '' ),
-    created_at timestamp   not null default now()
+    -- The maximum length of an email address is 254 characters according to the specification (RFC 5321).
+    email      varchar(254) not null unique,
+    password   varchar(60)  not null,
+    first_name varchar(128) not null,
+    last_name  varchar(128) not null,
+    role_id    int          not null,
+    created_at timestamp    not null default now(),
+    foreign key (role_id) references roles (id)
 );
 
 -- create table user_roles
@@ -36,25 +43,49 @@ create table users_roles
     foreign key (role_id) references roles (id)
 );
 
--- create table incidents
-create table incidents
+-- create table incident_categories
+create table incident_categories
 (
-    id   serial primary key,
-    name varchar(50) not null unique check ( name <> '' )
+    id                           serial primary key,
+    init_search_radius_in_meters double precision not null
+);
+
+-- create table incident_category_names
+create table incident_category_names
+(
+    category_id int          not null,
+    language    char(2)      not null,
+    name        varchar(128) not null,
+    primary key (category_id, language),
+    foreign key (category_id) references incident_categories (id)
+);
+
+-- create enum group_status
+CREATE TYPE group_status AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED');
+
+-- create table report_groups
+create table report_groups
+(
+    id                      serial primary key,
+    category_id             int              not null,
+    central_point           geometry(Point, 4326),
+    status                  group_status     not null default 'PENDING',
+    search_radius_in_meters double precision not null,
+    last_updated            timestamp        not null,
+    foreign key (category_id) references incident_categories (id)
 );
 
 -- create table incident_reports
 create table incident_reports
 (
-    id                 serial primary key,
-    incident_id        int              not null,
-    user_id            int              not null,
+    id          serial primary key,
+    user_id     int       not null,
+    category_id int       not null,
+    group_id    int       not null,
+    location    geometry(Point, 4326),
     description        text,
-    longitude          double precision not null,
-    latitude           double precision not null,
-    image_path         varchar(100),
-    voice_message_path varchar(100),
-    created_at         timestamp        not null default now(),
+    image_path  varchar(255),
+    created_at  timestamp not null,
     foreign key (incident_id) references incidents (id),
     foreign key (user_id) references users (id)
 );
