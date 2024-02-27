@@ -2,9 +2,11 @@
 delete
 from incident_reports;
 delete
-from incidents;
+from report_groups;
 delete
-from users_roles;
+from incident_category_names;
+delete
+from incident_categories;
 delete
 from users;
 delete
