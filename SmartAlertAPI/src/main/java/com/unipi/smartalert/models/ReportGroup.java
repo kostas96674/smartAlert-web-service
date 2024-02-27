@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,5 +34,9 @@ public class ReportGroup {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private IncidentCategory category;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private List<IncidentReport> reports;
 
 }

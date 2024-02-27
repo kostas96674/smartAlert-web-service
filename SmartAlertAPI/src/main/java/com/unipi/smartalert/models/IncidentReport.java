@@ -36,7 +36,4 @@ public class IncidentReport {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "group_id", nullable = false)
-    private ReportGroup group;
 }
