@@ -1,0 +1,37 @@
+package com.unipi.smartalert.models;
+
+import com.unipi.smartalert.enums.GroupStatus;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.locationtech.jts.geom.Point;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "report_groups")
+public class ReportGroup {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "central_point", nullable = false)
+    private Point centralPoint;
+
+    @Column(name = "status", nullable = false)
+    private GroupStatus status;
+
+    @Column(name = "search_radius_in_meters", nullable = false)
+    private double searchRadiusInMeters;
+
+    @Column(name = "last_updated", nullable = false)
+    private LocalDateTime lastUpdated;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private IncidentCategory category;
+
+}
