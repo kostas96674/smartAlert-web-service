@@ -33,16 +33,6 @@ create table users
     foreign key (role_id) references roles (id)
 );
 
--- create table user_roles
-create table users_roles
-(
-    user_id int not null,
-    role_id int not null,
-    primary key (user_id, role_id),
-    foreign key (user_id) references users (id),
-    foreign key (role_id) references roles (id)
-);
-
 -- create table incident_categories
 create table incident_categories
 (
@@ -68,7 +58,7 @@ create table report_groups
 (
     id                      serial primary key,
     category_id             int              not null,
-    central_point           geometry(Point, 4326),
+    central_point           geometry(Point, 4326) not null,
     status                  group_status     not null default 'PENDING',
     search_radius_in_meters double precision not null,
     last_updated            timestamp        not null,
@@ -82,10 +72,11 @@ create table incident_reports
     user_id     int       not null,
     category_id int       not null,
     group_id    int       not null,
-    location    geometry(Point, 4326),
+    location    geometry(Point, 4326) not null,
     description        text,
     image_path  varchar(255),
     created_at  timestamp not null,
-    foreign key (incident_id) references incidents (id),
-    foreign key (user_id) references users (id)
+    foreign key (category_id) references incident_categories (id),
+    foreign key (user_id) references users (id),
+    foreign key (group_id) references report_groups (id)
 );

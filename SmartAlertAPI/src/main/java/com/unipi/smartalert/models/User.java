@@ -13,34 +13,24 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "username", nullable = false, length = 30, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, length = 254, unique = true)
+    private String email;
 
     @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "email", nullable = false, length = 50, unique = true)
-    private String email;
-
-    @Column(name = "first_name", nullable = false, length = 50)
+    @Column(name = "first_name", nullable = false, length = 128)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 50)
+    @Column(name = "last_name", nullable = false, length = 128)
     private String lastName;
-
-    @Column(name = "phone", nullable = false, length = 20)
-    private String phone;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = {@JoinColumn(name = "user_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", nullable = false)}
-    )
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 }
