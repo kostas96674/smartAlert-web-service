@@ -1,4 +1,4 @@
-package com.unipi.smartalert.security;
+package com.unipi.smartalert.configurations;
 
 import com.unipi.smartalert.services.UserService;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
-                configurer.requestMatchers("/users/**").hasAnyAuthority("sender", "receiver")
+                configurer.requestMatchers("**").permitAll()
         );
 
         // Use HTTP Basic authentication
