@@ -1,8 +1,6 @@
 package com.unipi.smartalert.controllers;
 
 import com.unipi.smartalert.dtos.IncidentCategoryDTO;
-import com.unipi.smartalert.models.IncidentCategory;
-import com.unipi.smartalert.repositories.IncidentCategoryRepository;
 import com.unipi.smartalert.services.IncidentCategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,8 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/incident-categories")
 @AllArgsConstructor
+@RequestMapping("/incident-categories")
 public class IncidentCategoriesController {
 
     private IncidentCategoryService service;
