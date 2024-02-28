@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
     private UserRepository userRepository;
 
     @Override
@@ -35,4 +36,17 @@ public class UserServiceImpl implements UserService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getTitle())).collect(Collectors.toList());
     }
+
+    @Override
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            // Todo: Replace with custom exception
+            throw new RuntimeException("User not found");
+        }
+
+        return user;
+    }
+
 }
