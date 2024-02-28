@@ -1,15 +1,19 @@
 package com.unipi.smartalert.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
 import java.sql.Timestamp;
 
 @Entity
-@Getter
-@Setter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "incident_reports")
 public class IncidentReport {
     @Id
@@ -28,9 +32,12 @@ public class IncidentReport {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
+    @Column(name = "group_id")
+    private int groupId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
-    private IncidentCategory incident;
+    private IncidentCategory category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
