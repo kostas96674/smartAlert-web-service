@@ -21,6 +21,8 @@ public class IncidentReportServiceImpl implements IncidentReportService {
     private final IncidentReportRepository repository;
     private final IncidentReportMapper mapper;
     private final EntityManager entityManager;
+    private final FirebaseService firebaseService;
+    private final ReportGroupService groupService;
 
     @Transactional
     @Override
