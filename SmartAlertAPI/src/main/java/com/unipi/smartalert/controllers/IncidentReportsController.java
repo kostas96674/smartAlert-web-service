@@ -6,14 +6,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.concurrent.Executor;
-
 @RestController
-@RequestMapping("/reports")
 @AllArgsConstructor
+@RequestMapping("/reports")
 public class IncidentReportsController {
 
-    private final Executor executor;
     private final IncidentReportService service;
 
     // GET /reports - Get all incident reports
