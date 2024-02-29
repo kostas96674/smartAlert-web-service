@@ -1,10 +1,13 @@
 package com.unipi.smartalert.services.impl;
 
 import com.unipi.smartalert.dtos.ReportDTO;
+import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.models.IncidentReport;
 import com.unipi.smartalert.repositories.IncidentReportRepository;
+import com.unipi.smartalert.services.FirebaseService;
 import com.unipi.smartalert.services.IncidentReportService;
+import com.unipi.smartalert.services.ReportGroupService;
 import com.unipi.smartalert.utils.ImageUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -47,6 +50,13 @@ public class IncidentReportServiceImpl implements IncidentReportService {
 
         savedReport.setImagePath(path);
         repository.save(savedReport);
+
+        // Create a ReportGroupDTO based on the savedReport group id
+        ReportGroupDTO groupDTO = groupService.createDTO(savedReport.getGroupId());
+
+        // Update firebase
+        firebaseService.writeToDatabase(groupDTO);
+
     }
 
 }
