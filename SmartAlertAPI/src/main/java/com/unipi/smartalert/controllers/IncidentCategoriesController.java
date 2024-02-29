@@ -14,7 +14,7 @@ import java.util.Locale;
 @RequestMapping("/incident-categories")
 public class IncidentCategoriesController {
 
-    private IncidentCategoryService service;
+    private final IncidentCategoryService service;
 
     // GET /incidents - Get all incidents
     @GetMapping

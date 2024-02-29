@@ -22,6 +22,7 @@ public class ReportGroup {
     @Column(name = "central_point", nullable = false)
     private Point centralPoint;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GroupStatus status;
 
