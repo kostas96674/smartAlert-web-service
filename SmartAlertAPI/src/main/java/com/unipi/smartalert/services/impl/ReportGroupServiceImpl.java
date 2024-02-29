@@ -1,8 +1,10 @@
 package com.unipi.smartalert.services.impl;
 
+import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.exceptions.ActionNotAllowedException;
 import com.unipi.smartalert.exceptions.ResourceNotFoundException;
+import com.unipi.smartalert.mappers.ReportGroupMapper;
 import com.unipi.smartalert.models.ReportGroup;
 import com.unipi.smartalert.repositories.ReportGroupRepository;
 import com.unipi.smartalert.services.ReportGroupService;
@@ -16,7 +18,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ReportGroupServiceImpl implements ReportGroupService {
 
-    private ReportGroupRepository repository;
+    private final ReportGroupRepository repository;
+    private final ReportGroupMapper groupMapper;
 
     @Transactional
     @Override
@@ -35,5 +38,16 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
         // TODO: Update Firebase and inform the users
 
+    }
+
+    @Override
+    public ReportGroupDTO createDTO(long id) {
+
+        Optional<ReportGroup> reportGroupOptional = repository.findById(id);
+
+        if (reportGroupOptional.isEmpty()) throw new ResourceNotFoundException("Report Group with id " + id + " was not found");
+        ReportGroup reportGroup = reportGroupOptional.get();
+
+        return groupMapper.mapToDTO(reportGroup);
     }
 }
