@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/groups")
 public class ReportGroupsController {
 
-    private ReportGroupService service;
+    private final ReportGroupService service;
 
     @PatchMapping("/{id}/accept")
     public ResponseEntity<Void> acceptGroup(@PathVariable long id) {

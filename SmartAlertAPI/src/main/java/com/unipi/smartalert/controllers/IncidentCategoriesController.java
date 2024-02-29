@@ -16,7 +16,7 @@ import java.util.Locale;
 @AllArgsConstructor
 public class IncidentCategoriesController {
 
-    private IncidentCategoryService service;
+    private final IncidentCategoryService service;
 
     // GET /incidents - Get all incidents
     @GetMapping
