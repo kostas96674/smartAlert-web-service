@@ -53,6 +53,9 @@ create table incident_category_names
 -- create enum group_status
 CREATE TYPE group_status AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED');
 
+-- create cast for group_status
+CREATE CAST (varchar AS group_status) WITH INOUT AS IMPLICIT;
+
 -- create table report_groups
 create table report_groups
 (
