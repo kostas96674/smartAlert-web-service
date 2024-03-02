@@ -12,7 +12,6 @@ import java.util.Map;
 public class ReportGroupMapper {
 
     public ReportGroupDTO mapToDTO(ReportGroup reportGroup) {
-
         Map<String, String> categories = new HashMap<>();
         reportGroup.getCategory().getNames().forEach(categoryName -> categories.put(categoryName.getLanguage(), categoryName.getName()));
 
