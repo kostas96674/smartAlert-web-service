@@ -22,7 +22,7 @@ public class FirebaseServiceImpl implements FirebaseService {
 
     @Override
     public void writeToDatabase(ReportGroupDTO reportGroupDTO) {
-        ApiFuture<Void> apiFuture = DB_REF.child(REPORT_GROUPS_PATH).child(reportGroupDTO.getGroupId()).setValueAsync(reportGroupDTO);
+        ApiFuture<Void> apiFuture = DB_REF.child(REPORT_GROUPS_PATH).child(String.valueOf(reportGroupDTO.getGroupId())).setValueAsync(reportGroupDTO);
         ApiFutures.addCallback(apiFuture, new ApiFutureCallback<>() {
             @Override
             public void onFailure(Throwable throwable) {

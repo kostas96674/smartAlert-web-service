@@ -1,14 +1,14 @@
 package com.unipi.smartalert.controllers;
 
+import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.services.ReportGroupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportGroupController {
 
     private final ReportGroupService service;
+
+    @GetMapping
+    public List<ReportGroupDTO> getAll() {
+        return service.findAllAcceptedGroupsWithin24Hours();
+    }
 
     @PatchMapping("/{id}/accept")
     public ResponseEntity<Void> acceptGroup(@PathVariable long id) {
