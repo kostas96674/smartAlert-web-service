@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/roles")
-public class RolesController {
+public class RoleController {
 
     // GET /roles - Get all roles
     @GetMapping
