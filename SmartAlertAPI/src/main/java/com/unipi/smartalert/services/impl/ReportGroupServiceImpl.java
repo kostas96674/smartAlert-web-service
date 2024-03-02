@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,4 +52,12 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
         return groupMapper.mapToDTO(reportGroup);
     }
+
+    @Override
+    public List<ReportGroupDTO> findAllAcceptedGroupsWithin24Hours() {
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+        List<ReportGroup> reportGroups = repository.findAllAcceptedGroupsWithin24Hours(twentyFourHoursAgo);
+        return reportGroups.stream().map(groupMapper::mapToDTO).toList();
+    }
+
 }
