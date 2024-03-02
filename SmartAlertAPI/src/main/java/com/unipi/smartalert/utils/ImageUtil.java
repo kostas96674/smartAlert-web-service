@@ -15,7 +15,7 @@ public class ImageUtil {
     public static void saveImageToDisk(byte[] byteArray, String path) {
         try {
             BufferedImage image = convertByteArrayToJPEG(byteArray);
-            ImageIO.write(image, "jpg", new File(path));
+            ImageIO.write(image, "jpeg", new File(path));
         } catch (IOException e) {
             // TODO: throw a custom exception
             throw new RuntimeException(e);
@@ -54,7 +54,7 @@ public class ImageUtil {
     private static byte[] convertJPEGToByteArray(BufferedImage image) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
-            ImageIO.write(image, "jpg", bos);
+            ImageIO.write(image, "jpeg", bos);
         } catch (IOException e) {
             // TODO: throw a custom exception
             throw new RuntimeException(e);

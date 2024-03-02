@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/groups")
-public class ReportGroupsController {
+public class ReportGroupController {
 
     private final ReportGroupService service;
 

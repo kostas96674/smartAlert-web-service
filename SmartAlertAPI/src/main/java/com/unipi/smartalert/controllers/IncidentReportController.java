@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reports")
-public class IncidentReportsController {
+public class IncidentReportController {
 
     private final IncidentReportService service;
 

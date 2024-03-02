@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class IncidentCategoryServiceImpl implements IncidentCategoryService {
 
-    private IncidentCategoryRepository repository;
+    private final IncidentCategoryRepository repository;
 
     @Override
     public List<IncidentCategoryDTO> findByLanguage(String language) {
