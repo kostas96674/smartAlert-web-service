@@ -18,5 +18,6 @@ public class ReportGroupDTO {
     private String lastReportTimestamp;
     private int reportCount;
     private LocationDTO location;
+    private double searchRadiusInMeters;
 
 }
