@@ -33,23 +33,21 @@ public class IncidentReportServiceImpl implements IncidentReportService {
         IncidentReport savedReport = repository.save(mapper.mapToIncidentReport(report));
         entityManager.refresh(savedReport);
 
-        if (image == null) {
-            return;
+        if (image != null) {
+            byte[] byteArray;
+            try {
+                byteArray = image.getBytes();
+            } catch (IOException e) {
+                // TODO: throw a custom exception
+                throw new RuntimeException(e);
+            }
+
+            String path = String.format("image-%d.jpg", savedReport.getId());
+            ImageUtil.saveImageToDisk(byteArray, path);
+
+            savedReport.setImagePath(path);
+            repository.save(savedReport);
         }
-
-        byte[] byteArray;
-        try {
-            byteArray = image.getBytes();
-        } catch (IOException e) {
-            // TODO: throw a custom exception
-            throw new RuntimeException(e);
-        }
-
-        String path = String.format("image-%d.jpg", savedReport.getId());
-        ImageUtil.saveImageToDisk(byteArray, path);
-
-        savedReport.setImagePath(path);
-        repository.save(savedReport);
 
         // Create a ReportGroupDTO based on the savedReport group id
         ReportGroupDTO groupDTO = groupService.createDTO(savedReport.getGroupId());
