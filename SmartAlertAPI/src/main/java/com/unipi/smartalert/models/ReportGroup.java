@@ -2,16 +2,14 @@ package com.unipi.smartalert.models;
 
 import com.unipi.smartalert.enums.GroupStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "report_groups")
 public class ReportGroup {
 
