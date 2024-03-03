@@ -1,9 +1,11 @@
 package com.unipi.smartalert.services.impl;
 
+import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.exceptions.ActionNotAllowedException;
 import com.unipi.smartalert.exceptions.ResourceNotFoundException;
+import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.mappers.ReportGroupMapper;
 import com.unipi.smartalert.models.ReportGroup;
 import com.unipi.smartalert.repositories.ReportGroupRepository;
@@ -22,6 +24,7 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
     private final ReportGroupRepository repository;
     private final ReportGroupMapper groupMapper;
+    private final IncidentReportMapper reportMapper;
 
     @Transactional
     @Override
@@ -58,6 +61,12 @@ public class ReportGroupServiceImpl implements ReportGroupService {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
         List<ReportGroup> reportGroups = repository.findAllAcceptedGroupsWithin24Hours(twentyFourHoursAgo);
         return reportGroups.stream().map(groupMapper::mapToDTO).toList();
+    }
+
+    @Override
+    public List<ReportDTO> getReportsByGroupId(long id) {
+        ReportGroup reportGroup = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Group with id " + id + " was not found."));
+        return reportGroup.getReports().stream().map(reportMapper::mapToDTO).toList();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.unipi.smartalert.controllers;
 
+import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.services.ReportGroupService;
@@ -20,6 +21,11 @@ public class ReportGroupController {
     @GetMapping
     public List<ReportGroupDTO> getAll() {
         return service.findAllAcceptedGroupsWithin24Hours();
+    }
+
+    @GetMapping("/{id}/reports")
+    public List<ReportDTO> getReportsByGroupId(@PathVariable("id") long id) {
+        return service.getReportsByGroupId(id);
     }
 
     @PatchMapping("/{id}/accept")
