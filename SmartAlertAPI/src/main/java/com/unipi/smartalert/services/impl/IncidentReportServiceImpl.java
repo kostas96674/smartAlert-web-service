@@ -2,6 +2,7 @@ package com.unipi.smartalert.services.impl;
 
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
+import com.unipi.smartalert.exceptions.ResourceNotFoundException;
 import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.models.IncidentReport;
 import com.unipi.smartalert.repositories.IncidentReportRepository;
@@ -55,6 +56,21 @@ public class IncidentReportServiceImpl implements IncidentReportService {
         // Update firebase
         firebaseService.writeToDatabase(groupDTO);
 
+    }
+
+    @Override
+    public byte[] getImage(long id) {
+
+        IncidentReport report = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Report with id " + id + " was not found")
+        );
+
+        String imgPath = report.getImagePath();
+        if (imgPath == null || imgPath.trim().isEmpty()) {
+            throw new ResourceNotFoundException("Image not found for report with id " + id);
+        }
+
+        return ImageUtil.readImageFromDisk(imgPath);
     }
 
 }
