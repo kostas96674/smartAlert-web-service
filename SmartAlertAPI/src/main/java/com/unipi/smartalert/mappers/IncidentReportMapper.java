@@ -1,5 +1,6 @@
 package com.unipi.smartalert.mappers;
 
+import com.unipi.smartalert.dtos.LocationDTO;
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.models.IncidentReport;
 import com.unipi.smartalert.services.IncidentCategoryService;
@@ -20,6 +21,7 @@ public class IncidentReportMapper {
     private final IncidentCategoryService incidentCategoryService;
     private final GeometryFactory geometryFactory;
     private final UserService userService;
+    private final UserMapper userMapper;
 
     public IncidentReport mapToIncidentReport(ReportDTO reportDTO) {
         Point point = geometryFactory.createPoint(
@@ -35,6 +37,19 @@ public class IncidentReportMapper {
                 .location(point)
                 .description(reportDTO.getDescription())
                 .createdAt(Timestamp.valueOf(reportDTO.getTimestamp()))
+                .build();
+    }
+
+    public ReportDTO mapToDTO(IncidentReport incidentReport) {
+        boolean hasImage = (incidentReport.getImagePath() != null && !incidentReport.getImagePath().isEmpty());
+        return ReportDTO.builder()
+                .id(incidentReport.getId())
+                .categoryId(incidentReport.getId())
+                .location(new LocationDTO(incidentReport.getLocation().getY(), incidentReport.getLocation().getX()))
+                .timestamp(incidentReport.getCreatedAt().toString())
+                .description(incidentReport.getDescription())
+                .sender(userMapper.mapToUserCredentialsDTO(incidentReport.getUser()))
+                .hasImage(hasImage)
                 .build();
     }
 
