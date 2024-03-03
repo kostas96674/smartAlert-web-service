@@ -29,7 +29,7 @@ public class IncidentReportController {
     @PostMapping
     public void create(
             @RequestPart(name = "report") ReportDTO report,
-            @RequestPart(name = "image") MultipartFile image
+            @RequestPart(name = "image", required = false) MultipartFile image
     ) {
         service.saveReport(report, image);
     }
