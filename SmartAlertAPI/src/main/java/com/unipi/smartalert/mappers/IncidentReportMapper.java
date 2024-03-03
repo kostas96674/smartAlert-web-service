@@ -24,8 +24,8 @@ public class IncidentReportMapper {
     public IncidentReport mapToIncidentReport(ReportDTO reportDTO) {
         Point point = geometryFactory.createPoint(
                 new Coordinate(
-                        reportDTO.getLocation().getLatitude(),
-                        reportDTO.getLocation().getLongitude())
+                        reportDTO.getLocation().getLongitude(),
+                        reportDTO.getLocation().getLatitude())
         );
         point.setSRID(4326);
 
