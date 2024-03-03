@@ -26,7 +26,7 @@ public class IncidentReport {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "image_path", length = 255)
+    @Column(name = "image_path")
     private String imagePath;
 
     @Column(name = "created_at", nullable = false, updatable = false)

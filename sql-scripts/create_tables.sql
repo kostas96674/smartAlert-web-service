@@ -9,6 +9,9 @@ drop table if exists incident_categories;
 drop table if exists users;
 drop table if exists roles;
 
+-- drop cast for group_status
+drop cast (varchar as group_status);
+
 -- drop group_status enum
 drop type if exists group_status;
 
