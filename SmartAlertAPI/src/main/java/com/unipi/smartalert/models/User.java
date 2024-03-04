@@ -1,13 +1,14 @@
 package com.unipi.smartalert.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
+@Data
 @Entity
 @Table(name = "users")
 public class User {
