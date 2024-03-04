@@ -1,5 +1,6 @@
 package com.unipi.smartalert.services.impl;
 
+import com.unipi.smartalert.dtos.IncidentMessageDTO;
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
@@ -55,7 +56,19 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
                 if (!reportGroup.getStatus().equals(GroupStatus.ACCEPTED)) return;
 
-                // TODO: Inform the users
+                firebaseService.sendMessageAsync(groupMapper.mapToIncidentMessageDTO(reportGroup), new APIResponseListener<>() {
+                    @Override
+                    public void onSuccessfulResponse(Void responseObject) {
+                        //TODO: UPDATE
+                        logger.info("Message successfully sent");
+                    }
+
+                    @Override
+                    public void onFailure(ErrorResponse e) {
+                        // TODO: UPDATE
+                        logger.error("Something went wrong");
+                    }
+                });
             }
 
             @Override

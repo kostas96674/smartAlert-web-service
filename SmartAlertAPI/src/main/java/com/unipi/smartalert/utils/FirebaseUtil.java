@@ -8,6 +8,7 @@ import lombok.experimental.UtilityClass;
 public class FirebaseUtil {
 
     public static final DatabaseReference DB_REF = FirebaseDatabase.getInstance().getReference();
-    public static final String REPORT_GROUPS_PATH = "groups";
+    public static final String GROUPS = "groups";
+    public static final String TOKENS = "tokens";
 
 }

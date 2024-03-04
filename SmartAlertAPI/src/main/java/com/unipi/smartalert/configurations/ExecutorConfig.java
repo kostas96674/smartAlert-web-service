@@ -14,7 +14,7 @@ public class ExecutorConfig {
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(20);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("SmartAlert-Thread-");
+        executor.setThreadNamePrefix("Firebase-Thread-");
         executor.initialize();
         return executor;
     }
