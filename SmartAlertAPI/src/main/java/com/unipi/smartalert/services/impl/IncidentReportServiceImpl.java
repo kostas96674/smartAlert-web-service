@@ -2,7 +2,9 @@ package com.unipi.smartalert.services.impl;
 
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
+import com.unipi.smartalert.exceptions.ErrorResponse;
 import com.unipi.smartalert.exceptions.ResourceNotFoundException;
+import com.unipi.smartalert.listeners.APIResponseListener;
 import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.models.IncidentReport;
 import com.unipi.smartalert.repositories.IncidentReportRepository;
@@ -13,6 +15,8 @@ import com.unipi.smartalert.utils.ImageUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +31,7 @@ public class IncidentReportServiceImpl implements IncidentReportService {
     private final EntityManager entityManager;
     private final FirebaseService firebaseService;
     private final ReportGroupService groupService;
+    private static final Logger logger = LoggerFactory.getLogger(IncidentReportServiceImpl.class);
 
     @Transactional
     @Override
@@ -54,7 +59,17 @@ public class IncidentReportServiceImpl implements IncidentReportService {
         ReportGroupDTO groupDTO = groupService.createDTO(savedReport.getGroupId());
 
         // Update firebase
-        firebaseService.writeToDatabase(groupDTO);
+        firebaseService.writeToDatabaseAsync(groupDTO, new APIResponseListener<>() {
+            @Override
+            public void onSuccessfulResponse(Void responseObject) {
+                logger.info("Successfully added Report Group with ID {} to the Realtime database.", groupDTO.getGroupId());
+            }
+
+            @Override
+            public void onFailure(ErrorResponse e) {
+                logger.error("Failed to insert Report Group with ID {} to the Realtime database. Error: {}", groupDTO.getGroupId(), e.getMessage());
+            }
+        });
 
     }
 

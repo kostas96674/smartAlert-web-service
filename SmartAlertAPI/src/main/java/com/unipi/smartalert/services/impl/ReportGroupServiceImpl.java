@@ -4,14 +4,18 @@ import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.exceptions.ActionNotAllowedException;
+import com.unipi.smartalert.exceptions.ErrorResponse;
 import com.unipi.smartalert.exceptions.ResourceNotFoundException;
+import com.unipi.smartalert.listeners.APIResponseListener;
 import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.mappers.ReportGroupMapper;
 import com.unipi.smartalert.models.ReportGroup;
 import com.unipi.smartalert.repositories.ReportGroupRepository;
+import com.unipi.smartalert.services.FirebaseService;
 import com.unipi.smartalert.services.ReportGroupService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,23 +29,40 @@ public class ReportGroupServiceImpl implements ReportGroupService {
     private final ReportGroupRepository repository;
     private final ReportGroupMapper groupMapper;
     private final IncidentReportMapper reportMapper;
+    private final FirebaseService firebaseService;
+    private static final Logger logger = LoggerFactory.getLogger(ReportGroupServiceImpl.class);
 
-    @Transactional
     @Override
     public void changeStatus(long id, GroupStatus newStatus) {
 
         Optional<ReportGroup> reportGroupOptional = repository.findById(id);
 
-        if (reportGroupOptional.isEmpty()) throw new ResourceNotFoundException("Report Group with id " + id + " was not found");
+        if (reportGroupOptional.isEmpty()) throw new ResourceNotFoundException(String.format("Report group with id %d was not found", id));
         ReportGroup reportGroup = reportGroupOptional.get();
 
         // Check if the report group is in 'PENDING' state, otherwise throw exception
         if (!reportGroup.getStatus().equals(GroupStatus.PENDING)) throw new ActionNotAllowedException("You cannot change the status of a non-pending report group");
 
-        reportGroup.setStatus(newStatus);
-        repository.save(reportGroup);
+        // Remove the group from Firebase Realtime database
+        firebaseService.removeGroupFromDatabaseAsync(reportGroup.getId(), new APIResponseListener<>() {
+            @Override
+            public void onSuccessfulResponse(Void responseObject) {
+                logger.info("Successfully removed report group with ID {} from Firebase Realtime database.", reportGroup.getId());
 
-        // TODO: Update Firebase and inform the users
+                // Update group status in our database (postgres)
+                reportGroup.setStatus(newStatus);
+                repository.save(reportGroup);
+
+                if (!reportGroup.getStatus().equals(GroupStatus.ACCEPTED)) return;
+
+                // TODO: Inform the users
+            }
+
+            @Override
+            public void onFailure(ErrorResponse e) {
+                logger.error("Failed to remove report group with ID {} from Firebase Realtime database.", reportGroup.getId());
+            }
+        });
 
     }
 
