@@ -1,7 +1,9 @@
 package com.unipi.smartalert.mappers;
 
+import com.unipi.smartalert.dtos.IncidentMessageDTO;
 import com.unipi.smartalert.dtos.LocationDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
+import com.unipi.smartalert.models.IncidentCategoryName;
 import com.unipi.smartalert.models.ReportGroup;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,23 @@ public class ReportGroupMapper {
                 .reportCount(10)
                 .location(locationDTO)
                 .searchRadiusInMeters(reportGroup.getSearchRadiusInMeters())
+                .build();
+    }
+
+    public IncidentMessageDTO mapToIncidentMessageDTO(ReportGroup reportGroup) {
+
+        Map<String, String> categories = new HashMap<>(){
+            {
+                for (IncidentCategoryName categoryName : reportGroup.getCategory().getNames()) {
+                    put(categoryName.getLanguage(), categoryName.getName());
+                }
+            }
+        };
+
+        return IncidentMessageDTO.builder()
+                .location(new LocationDTO(reportGroup.getCentralPoint().getY(), reportGroup.getCentralPoint().getX()))
+                .radius(reportGroup.getSearchRadiusInMeters())
+                .categoryNames(categories)
                 .build();
     }
 
