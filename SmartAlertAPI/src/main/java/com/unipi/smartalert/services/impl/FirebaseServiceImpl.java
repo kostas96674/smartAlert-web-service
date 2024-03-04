@@ -4,10 +4,14 @@ import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutureCallback;
 import com.google.api.core.ApiFutures;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
+import com.unipi.smartalert.exceptions.ErrorResponse;
+import com.unipi.smartalert.listeners.APIResponseListener;
 import com.unipi.smartalert.services.FirebaseService;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Executor;
 
 import static com.unipi.smartalert.utils.FirebaseUtil.DB_REF;
@@ -21,21 +25,35 @@ public class FirebaseServiceImpl implements FirebaseService {
 
 
     @Override
-    public void writeToDatabase(ReportGroupDTO reportGroupDTO) {
+    public void writeToDatabaseAsync(ReportGroupDTO reportGroupDTO, @NonNull  APIResponseListener<Void> listener) {
         ApiFuture<Void> apiFuture = DB_REF.child(REPORT_GROUPS_PATH).child(String.valueOf(reportGroupDTO.getGroupId())).setValueAsync(reportGroupDTO);
         ApiFutures.addCallback(apiFuture, new ApiFutureCallback<>() {
             @Override
             public void onFailure(Throwable throwable) {
-                // Todo: Log the error
-                System.out.println("Error: " + throwable.getMessage());
+                listener.onFailure(new ErrorResponse(LocalDateTime.now(), "Firebase Error", throwable.getMessage()));
             }
 
             @Override
             public void onSuccess(Void unused) {
-                // Todo: Log the success
-                System.out.println("Value from android app was set successfully.");
+               listener.onSuccessfulResponse(null);
             }
         }, executor);
+    }
+
+    @Override
+    public void removeGroupFromDatabaseAsync(long groupId, @NonNull APIResponseListener<Void> listener) {
+        ApiFuture<Void> apiFuture = DB_REF.child(REPORT_GROUPS_PATH).child(String.valueOf(groupId)).removeValueAsync();
+        ApiFutures.addCallback(apiFuture, new ApiFutureCallback<>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                listener.onFailure(new ErrorResponse(LocalDateTime.now(), "Firebase Error", throwable.getMessage()));
+            }
+
+            @Override
+            public void onSuccess(Void unused) {
+                listener.onSuccessfulResponse(null);
+            }
+        });
     }
 
 }
