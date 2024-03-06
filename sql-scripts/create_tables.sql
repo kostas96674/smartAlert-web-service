@@ -18,7 +18,7 @@ drop type if exists group_status;
 -- create table roles
 create table roles
 (
-    id   serial primary key,
+    id    serial primary key,
     title varchar(16) not null unique
 );
 
@@ -63,11 +63,11 @@ CREATE CAST (varchar AS group_status) WITH INOUT AS IMPLICIT;
 create table report_groups
 (
     id                      serial primary key,
-    category_id             int              not null,
+    category_id             int                   not null,
     central_point           geometry(Point, 4326) not null,
-    status                  group_status     not null default 'PENDING',
-    search_radius_in_meters double precision not null,
-    last_updated            timestamp        not null,
+    status                  group_status          not null default 'PENDING',
+    search_radius_in_meters double precision      not null,
+    last_updated            timestamp             not null,
     foreign key (category_id) references incident_categories (id)
 );
 
@@ -75,13 +75,13 @@ create table report_groups
 create table incident_reports
 (
     id          serial primary key,
-    user_id     int       not null,
-    category_id int       not null,
-    group_id    int       not null,
+    user_id     int                   not null,
+    category_id int                   not null,
+    group_id    int                   not null,
     location    geometry(Point, 4326) not null,
-    description        text,
+    description text,
     image_path  varchar(255),
-    created_at  timestamp not null,
+    created_at  timestamp             not null,
     foreign key (category_id) references incident_categories (id),
     foreign key (user_id) references users (id),
     foreign key (group_id) references report_groups (id)
