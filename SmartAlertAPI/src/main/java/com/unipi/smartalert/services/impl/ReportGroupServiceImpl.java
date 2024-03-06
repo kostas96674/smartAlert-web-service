@@ -103,4 +103,9 @@ public class ReportGroupServiceImpl implements ReportGroupService {
         return reportGroup.getReports().stream().map(reportMapper::mapToDTO).toList();
     }
 
+    @Override
+    public List<ReportGroup> findAcceptedGroupsByMonthAndYear(int month, int year) {
+        return repository.findAcceptedGroupsByMonthAndYear(month, year);
+    }
+
 }

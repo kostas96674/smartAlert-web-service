@@ -13,4 +13,7 @@ public interface ReportGroupRepository extends JpaRepository<ReportGroup, Long> 
     @Query("SELECT rg FROM ReportGroup rg WHERE rg.status = 'ACCEPTED' AND rg.lastUpdated >= :twentyFourHoursAgo")
     List<ReportGroup> findAllAcceptedGroupsWithin24Hours(@Param("twentyFourHoursAgo") LocalDateTime twentyFourHoursAgo);
 
+    @Query("SELECT rg FROM ReportGroup rg WHERE rg.status = 'ACCEPTED' AND YEAR(rg.lastUpdated) = :year AND MONTH(rg.lastUpdated) = :month")
+    List<ReportGroup> findAcceptedGroupsByMonthAndYear(@Param("month") int month, @Param("year") int year);
+
 }
