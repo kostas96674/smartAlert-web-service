@@ -42,9 +42,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         int total = groupList.size();
 
-        statistics.forEach((category, value) -> {
-            statistics.put(category, value / total);
-        });
+        if (total != 0) {
+            statistics.forEach((category, value) -> {
+
+                statistics.put(category, value / total);
+            });
+        }
 
         return statistics;
     }
