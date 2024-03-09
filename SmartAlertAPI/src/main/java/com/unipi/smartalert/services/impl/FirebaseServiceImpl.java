@@ -34,7 +34,7 @@ public class FirebaseServiceImpl implements FirebaseService {
     private static final int MAX_MULTICAST_SIZE = 500;
 
     @Override
-    public void writeToDatabaseAsync(ReportGroupDTO reportGroupDTO, @NonNull  APIResponseListener<Void> listener) {
+    public void writeToDatabaseAsync(ReportGroupDTO reportGroupDTO, @NonNull APIResponseListener<Void> listener) {
         ApiFuture<Void> apiFuture = DB_REF.child(GROUPS).child(String.valueOf(reportGroupDTO.getGroupId())).setValueAsync(reportGroupDTO);
         ApiFutures.addCallback(apiFuture, new ApiFutureCallback<>() {
             @Override
@@ -44,7 +44,7 @@ public class FirebaseServiceImpl implements FirebaseService {
 
             @Override
             public void onSuccess(Void unused) {
-               listener.onSuccessfulResponse(null);
+                listener.onSuccessfulResponse(null);
             }
         }, executor);
     }
@@ -73,7 +73,7 @@ public class FirebaseServiceImpl implements FirebaseService {
             public void onSuccessfulResponse(List<String> responseObject) {
 
                 int totalTokens = responseObject.size();
-                //
+
                 int timesToSend = totalTokens % MAX_MULTICAST_SIZE == 0 ? totalTokens / MAX_MULTICAST_SIZE : (totalTokens / MAX_MULTICAST_SIZE) + 1;
                 timesToSend = 1; // TODO: REMOVE
                 for (int i = 0; i < timesToSend; i++) {
@@ -82,8 +82,11 @@ public class FirebaseServiceImpl implements FirebaseService {
 
                     MulticastMessage multicastMessage = MulticastMessage.builder()
                             .addAllTokens(responseObject)
-                            .putData("greeting", "hello from spring boot vol2")
                             .putData("longitude", String.valueOf(incidentMessageDTO.getLocation().getLongitude()))
+                            .putData("latitude", String.valueOf(incidentMessageDTO.getLocation().getLatitude()))
+                            .putData("radius", String.valueOf(incidentMessageDTO.getRadius()))
+                            .putData("category", incidentMessageDTO.getCategoryNames().get("en"))
+                            .putData("category-el", incidentMessageDTO.getCategoryNames().get("el"))
                             .build();
 
                     try {
