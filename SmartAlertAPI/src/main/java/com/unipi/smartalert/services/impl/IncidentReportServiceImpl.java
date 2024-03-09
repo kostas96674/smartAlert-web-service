@@ -2,11 +2,13 @@ package com.unipi.smartalert.services.impl;
 
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
+import com.unipi.smartalert.enums.GroupStatus;
 import com.unipi.smartalert.exceptions.ErrorResponse;
 import com.unipi.smartalert.exceptions.ResourceNotFoundException;
 import com.unipi.smartalert.listeners.APIResponseListener;
 import com.unipi.smartalert.mappers.IncidentReportMapper;
 import com.unipi.smartalert.models.IncidentReport;
+import com.unipi.smartalert.models.ReportGroup;
 import com.unipi.smartalert.repositories.IncidentReportRepository;
 import com.unipi.smartalert.services.FirebaseService;
 import com.unipi.smartalert.services.IncidentReportService;
@@ -54,6 +56,10 @@ public class IncidentReportServiceImpl implements IncidentReportService {
             savedReport.setImagePath(path);
             repository.save(savedReport);
         }
+
+        ReportGroup savedReportGroup = groupService.findById(savedReport.getGroupId());
+
+        if (!savedReportGroup.getStatus().equals(GroupStatus.PENDING)) return;
 
         // Create a ReportGroupDTO based on the savedReport group id
         ReportGroupDTO groupDTO = groupService.createDTO(savedReport.getGroupId());

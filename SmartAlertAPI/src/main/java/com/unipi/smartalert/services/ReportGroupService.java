@@ -14,5 +14,6 @@ public interface ReportGroupService {
     List<ReportGroupDTO> findAllAcceptedGroupsWithin24Hours();
     List<ReportDTO> getReportsByGroupId(long id);
     List<ReportGroup> findAcceptedGroupsByMonthAndYear(int month, int year);
+    ReportGroup findById(long id);
 
 }
