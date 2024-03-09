@@ -1,6 +1,5 @@
 package com.unipi.smartalert.services.impl;
 
-import com.unipi.smartalert.dtos.IncidentMessageDTO;
 import com.unipi.smartalert.dtos.ReportDTO;
 import com.unipi.smartalert.dtos.ReportGroupDTO;
 import com.unipi.smartalert.enums.GroupStatus;
@@ -106,6 +105,11 @@ public class ReportGroupServiceImpl implements ReportGroupService {
     @Override
     public List<ReportGroup> findAcceptedGroupsByMonthAndYear(int month, int year) {
         return repository.findAcceptedGroupsByMonthAndYear(month, year);
+    }
+
+    @Override
+    public ReportGroup findById(long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Group with id " + id + " was not found."));
     }
 
 }
