@@ -33,7 +33,7 @@ public class IncidentReport {
     private Timestamp createdAt;
 
     @Column(name = "group_id")
-    private int groupId;
+    private long groupId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)

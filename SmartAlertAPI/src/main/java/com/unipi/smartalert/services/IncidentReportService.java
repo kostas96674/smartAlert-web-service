@@ -7,5 +7,6 @@ public interface IncidentReportService {
 
     void saveReport(ReportDTO report, MultipartFile image);
     byte[] getImage(long id);
+    long getCountByGroupId(long id);
 
 }

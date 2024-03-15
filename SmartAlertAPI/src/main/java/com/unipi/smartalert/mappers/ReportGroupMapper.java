@@ -27,8 +27,6 @@ public class ReportGroupMapper {
                 .groupId(reportGroup.getId())
                 .incidentCategory(categories)
                 .lastReportTimestamp(reportGroup.getLastUpdated().toString())
-                // TODO: Fetch the report count
-                .reportCount(10)
                 .location(locationDTO)
                 .searchRadiusInMeters(reportGroup.getSearchRadiusInMeters())
                 .build();

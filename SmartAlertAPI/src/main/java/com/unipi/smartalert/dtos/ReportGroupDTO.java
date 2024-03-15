@@ -16,7 +16,7 @@ public class ReportGroupDTO {
     private long groupId;
     private Map<String, String> incidentCategory;
     private String lastReportTimestamp;
-    private int reportCount;
+    private long reportCount;
     private LocationDTO location;
     private double searchRadiusInMeters;
 

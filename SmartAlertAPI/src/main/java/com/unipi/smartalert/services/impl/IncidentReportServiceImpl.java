@@ -64,6 +64,9 @@ public class IncidentReportServiceImpl implements IncidentReportService {
         // Create a ReportGroupDTO based on the savedReport group id
         ReportGroupDTO groupDTO = groupService.createDTO(savedReport.getGroupId());
 
+        // Set the total reports (count)
+        groupDTO.setReportCount(getCountByGroupId(savedReport.getGroupId()));
+
         // Update firebase
         firebaseService.writeToDatabaseAsync(groupDTO, new APIResponseListener<>() {
             @Override
@@ -92,6 +95,11 @@ public class IncidentReportServiceImpl implements IncidentReportService {
         }
 
         return ImageUtil.readImageFromDisk(imgPath);
+    }
+
+    @Override
+    public long getCountByGroupId(long id) {
+        return repository.countByGroupId(id);
     }
 
 }
