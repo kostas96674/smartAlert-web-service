@@ -1,5 +1,6 @@
 package com.unipi.smartalert.services.impl;
 
+import com.unipi.smartalert.exceptions.ResourceNotFoundException;
 import com.unipi.smartalert.models.Role;
 import com.unipi.smartalert.models.User;
 import com.unipi.smartalert.repositories.UserRepository;
@@ -42,8 +43,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            // Todo: Replace with custom exception
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User with email " + email + " not found");
         }
 
         return user;

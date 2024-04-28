@@ -2,6 +2,7 @@ package com.unipi.smartalert.services.impl;
 
 import com.unipi.smartalert.dtos.IncidentCategoryDTO;
 import com.unipi.smartalert.exceptions.LanguageNotSupportedException;
+import com.unipi.smartalert.exceptions.ResourceNotFoundException;
 import com.unipi.smartalert.models.IncidentCategory;
 import com.unipi.smartalert.repositories.IncidentCategoryRepository;
 import com.unipi.smartalert.services.IncidentCategoryService;
@@ -26,8 +27,7 @@ public class IncidentCategoryServiceImpl implements IncidentCategoryService {
 
     @Override
     public IncidentCategory findById(long id) {
-        // Todo: Throw RecourseNotFoundException
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Incident category with id " + id + " not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Incident category with id " + id + " not found"));
     }
 
 }

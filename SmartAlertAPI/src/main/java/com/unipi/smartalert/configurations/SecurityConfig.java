@@ -29,7 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
-                // Todo: Add authorization rules here
+                // TODO: Add authorization rules here
                 configurer.requestMatchers("**").permitAll()
         );
 

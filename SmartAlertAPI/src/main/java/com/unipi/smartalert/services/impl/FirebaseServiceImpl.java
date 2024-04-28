@@ -73,12 +73,11 @@ public class FirebaseServiceImpl implements FirebaseService {
             public void onSuccessfulResponse(List<String> responseObject) {
 
                 int totalTokens = responseObject.size();
-
                 int timesToSend = totalTokens % MAX_MULTICAST_SIZE == 0 ? totalTokens / MAX_MULTICAST_SIZE : (totalTokens / MAX_MULTICAST_SIZE) + 1;
-                timesToSend = 1; // TODO: REMOVE
+
                 for (int i = 0; i < timesToSend; i++) {
 
-                    // TODO: Split list
+                    // TODO: Split list if timesToSend > 1
 
                     MulticastMessage multicastMessage = MulticastMessage.builder()
                             .addAllTokens(responseObject)

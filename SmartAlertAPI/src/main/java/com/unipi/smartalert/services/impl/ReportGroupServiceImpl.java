@@ -37,11 +37,13 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
         Optional<ReportGroup> reportGroupOptional = repository.findById(id);
 
-        if (reportGroupOptional.isEmpty()) throw new ResourceNotFoundException(String.format("Report group with id %d was not found", id));
+        if (reportGroupOptional.isEmpty())
+            throw new ResourceNotFoundException(String.format("Report group with id %d was not found", id));
         ReportGroup reportGroup = reportGroupOptional.get();
 
         // Check if the report group is in 'PENDING' state, otherwise throw exception
-        if (!reportGroup.getStatus().equals(GroupStatus.PENDING)) throw new ActionNotAllowedException("You cannot change the status of a non-pending report group");
+        if (!reportGroup.getStatus().equals(GroupStatus.PENDING))
+            throw new ActionNotAllowedException("You cannot change the status of a non-pending report group");
 
         // Remove the group from Firebase Realtime database
         firebaseService.removeGroupFromDatabaseAsync(reportGroup.getId(), new APIResponseListener<>() {
@@ -58,14 +60,12 @@ public class ReportGroupServiceImpl implements ReportGroupService {
                 firebaseService.sendMessageAsync(groupMapper.mapToIncidentMessageDTO(reportGroup), new APIResponseListener<>() {
                     @Override
                     public void onSuccessfulResponse(Void responseObject) {
-                        //TODO: UPDATE
                         logger.info("Message successfully sent");
                     }
 
                     @Override
                     public void onFailure(ErrorResponse e) {
-                        // TODO: UPDATE
-                        logger.error("Something went wrong");
+                        logger.error(e.getMessage());
                     }
                 });
             }
@@ -83,7 +83,8 @@ public class ReportGroupServiceImpl implements ReportGroupService {
 
         Optional<ReportGroup> reportGroupOptional = repository.findById(id);
 
-        if (reportGroupOptional.isEmpty()) throw new ResourceNotFoundException("Report Group with id " + id + " was not found");
+        if (reportGroupOptional.isEmpty())
+            throw new ResourceNotFoundException("Report Group with id " + id + " was not found");
         ReportGroup reportGroup = reportGroupOptional.get();
 
         return groupMapper.mapToDTO(reportGroup);

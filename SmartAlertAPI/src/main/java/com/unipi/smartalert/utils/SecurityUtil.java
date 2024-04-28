@@ -14,7 +14,6 @@ public class SecurityUtil {
             return authentication.getName();
         }
 
-        // Todo: Replace with custom exception
         throw new IllegalStateException("No authenticated user found");
     }
 

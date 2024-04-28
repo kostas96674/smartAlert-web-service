@@ -17,7 +17,6 @@ public class ImageUtil {
             BufferedImage image = convertByteArrayToJPEG(byteArray);
             ImageIO.write(image, "jpeg", new File(path));
         } catch (IOException e) {
-            // TODO: throw a custom exception
             throw new RuntimeException(e);
         }
     }
@@ -29,7 +28,6 @@ public class ImageUtil {
         try {
             image = ImageIO.read(bis);
         } catch (IOException e) {
-            // TODO: throw a custom exception
             throw new RuntimeException(e);
         }
 
@@ -45,7 +43,6 @@ public class ImageUtil {
             BufferedImage image = ImageIO.read(new File(path));
             byteArray = convertJPEGToByteArray(image);
         } catch (IOException e) {
-            // TODO: throw a custom exception
             throw new RuntimeException(e);
         }
         return byteArray;
@@ -56,7 +53,6 @@ public class ImageUtil {
         try {
             ImageIO.write(image, "jpeg", bos);
         } catch (IOException e) {
-            // TODO: throw a custom exception
             throw new RuntimeException(e);
         }
         return bos.toByteArray();

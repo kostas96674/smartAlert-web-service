@@ -17,12 +17,6 @@ public class IncidentReportController {
 
     private final IncidentReportService service;
 
-    // GET /reports - Get all incident reports
-    @GetMapping
-    public void getAll() {
-        // TODO: Implement
-    }
-
     // GET /reports/{id} - Get the image of an incident report by ID
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getImageByReportId(@PathVariable int id) {
@@ -42,18 +36,6 @@ public class IncidentReportController {
             @RequestPart(name = "image", required = false) MultipartFile image
     ) {
         service.saveReport(report, image);
-    }
-
-    // PUT /reports/{id} - Update an incident report
-    @PutMapping("/{id}")
-    public void update(@PathVariable int id) {
-        // TODO: Implement
-    }
-
-    // DELETE /reports/{id} - Delete an incident report
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
-        // TODO: Implement
     }
 
 }

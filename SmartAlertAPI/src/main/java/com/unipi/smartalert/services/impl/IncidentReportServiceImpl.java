@@ -46,7 +46,6 @@ public class IncidentReportServiceImpl implements IncidentReportService {
             try {
                 byteArray = image.getBytes();
             } catch (IOException e) {
-                // TODO: throw a custom exception
                 throw new RuntimeException(e);
             }
 
